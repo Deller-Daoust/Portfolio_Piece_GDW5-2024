@@ -599,7 +599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1614,7 +1614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -2755,7 +2755,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -235.3, y: -115.9}
+  m_AnchoredPosition: {x: -181.5, y: -96.5}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1195063847
@@ -3049,7 +3049,7 @@ Canvas:
   m_GameObject: {fileID: 1307664561}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -3615,6 +3615,7 @@ MonoBehaviour:
   Enemy: {fileID: 1930089981}
   healthText: {fileID: 2009824297}
   sanityText: {fileID: 1195063847}
+  clashValueText: {fileID: 1504467925}
   coinOneText: {fileID: 772634713}
   coinTwoText: {fileID: 1987234358}
   coinThreeText: {fileID: 196436307}
@@ -3658,7 +3659,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -280.4, y: 74.8}
+  m_AnchoredPosition: {x: -221.2, y: 54.7}
   m_SizeDelta: {x: 177.3669, y: 133.7562}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1504467925
@@ -4259,6 +4260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1496537240}
   enemy: {fileID: 1930089981}
+  startOfTurn: 0
 --- !u!1 &1930089981
 GameObject:
   m_ObjectHideFlags: 0
@@ -4376,6 +4378,7 @@ MonoBehaviour:
   Player: {fileID: 1496537240}
   healthText: {fileID: 460342914}
   sanityText: {fileID: 1148283837}
+  clashValueText: {fileID: 1141026872}
   coinOneText: {fileID: 437682531}
   coinTwoText: {fileID: 800638349}
   coinThreeText: {fileID: 1305667000}
@@ -4496,7 +4499,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -297.55, y: -119.7}
+  m_AnchoredPosition: {x: -234, y: -101.7}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2009824297

@@ -10,8 +10,7 @@ public class GameManager : MonoBehaviour
     Player playerScript;
     Enemy enemyScript;
 
-    bool startOfTurn = false;
-    
+    public bool startOfTurn = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,7 +25,7 @@ public class GameManager : MonoBehaviour
         }
 
         playerScript = player.GetComponent<Player>();
-        enemyScript = player.GetComponent<Enemy>();
+        enemyScript = enemy.GetComponent<Enemy>();
     }
 
     // Update is called once per frame
@@ -37,7 +36,7 @@ public class GameManager : MonoBehaviour
 
     public void TurnStart()
     {
-        if (startOfTurn = true)
+        if (startOfTurn == true)
         {
             switch (enemyScript.selectedSkill)
             {

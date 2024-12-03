@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] Text healthText;
     [SerializeField] Text sanityText;
+    [SerializeField] Text clashValueText;
 
     [SerializeField] Text coinOneText;
     [SerializeField] Text coinTwoText;
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour
     public int coinCount = 0;
 
     bool playerWon = false;
+    bool turnStarted = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -64,6 +66,7 @@ public class Player : MonoBehaviour
 
         healthText.text = health.ToString();
         sanityText.text = sanity.ToString();
+        clashValueText.text = totalClashValue.ToString();
     }
 
     public void NewTurn()
@@ -77,6 +80,15 @@ public class Player : MonoBehaviour
         speed = UnityEngine.Random.Range(2, 7);
 
         headsThreshold = 50 + sanity;
+
+        totalClashValue = 0;
+
+        turnStarted = true;
+
+        for(int i = 0; i < totalCoins.Length; i++)
+        {
+            totalCoins[i].SetActive(false);
+        }
 
         /*  To accurately determine whether a coin rolls heads or tails, we have headsThreshold.
          *  This takes the base percentage for a coin to be heads, which is 50%, and adds Sanity to it.
@@ -104,7 +116,10 @@ public class Player : MonoBehaviour
 
         totalClashValue = 0;
 
-        totalCoins[2].SetActive(true);
+        if (totalCoins[2].activeSelf == false)
+        {
+            totalCoins[2].SetActive(true);
+        }
 
         for (int i = 1; i <= coinCount; i++)
         {
@@ -223,6 +238,12 @@ public class Player : MonoBehaviour
     {
         // this skill I'm using to simulate a negative coin ID, meaning tails increases clash power
 
+        if (turnStarted == true)
+        {
+            gameScript.startOfTurn = true;
+            turnStarted = false;
+        }
+
         selectedSkill = 2;
 
         coinCount = 3;
@@ -233,9 +254,18 @@ public class Player : MonoBehaviour
 
         totalClashValue = 0;
 
-        totalCoins[1].SetActive(true);
-        totalCoins[2].SetActive(true);
-        totalCoins[3].SetActive(true);
+        if (totalCoins[1].activeSelf == false)
+        {
+            totalCoins[1].SetActive(true);
+        }
+        if (totalCoins[2].activeSelf == false)
+        {
+            totalCoins[2].SetActive(true);
+        }
+        if (totalCoins[3].activeSelf == false)
+        {
+            totalCoins[3].SetActive(true);
+        }
 
         for (int i = 1; i <= coinCount; i++)
         {
@@ -352,6 +382,12 @@ public class Player : MonoBehaviour
 
     public void SkillThree()
     {
+        if (turnStarted == true)
+        {
+            gameScript.startOfTurn = true;
+            turnStarted = false;
+        }
+
         selectedSkill = 3;
 
         coinCount = 5;
@@ -362,9 +398,12 @@ public class Player : MonoBehaviour
 
         totalClashValue = 0;
 
-        for (int i = 1; i < totalCoins.Length; i++)
+        for (int i = 1; i <= totalCoins.Length; i++)
         {
-            totalCoins[i].SetActive(true);
+            if (totalCoins[i].activeSelf == false)
+            {
+                totalCoins[i].SetActive(true);
+            }
         }
 
         for (int i = 0; i <= coinCount; i++)

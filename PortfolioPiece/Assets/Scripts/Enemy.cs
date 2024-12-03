@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] Text healthText;
     [SerializeField] Text sanityText;
+    [SerializeField] Text clashValueText;
 
     [SerializeField] Text coinOneText;
     [SerializeField] Text coinTwoText;
@@ -62,6 +63,7 @@ public class Enemy : MonoBehaviour
 
         healthText.text = health.ToString();
         sanityText.text = sanity.ToString();
+        clashValueText.text = totalClashValue.ToString();
     }
 
     public void NewTurn()
@@ -72,9 +74,18 @@ public class Enemy : MonoBehaviour
             enemyWon = false;
         }
 
+        selectedSkill = UnityEngine.Random.Range(1, 3);
+
         speed = UnityEngine.Random.Range(2, 7);
 
         headsThreshold = 50 + sanity;
+
+        totalClashValue = 0;
+
+        for (int i = 0; i < totalCoins.Length; i++)
+        {
+            totalCoins[i].SetActive(false);
+        }
 
         /*  To accurately determine whether a coin rolls heads or tails, we have headsThreshold.
          *  This takes the base percentage for a coin to be heads, which is 50%, and adds Sanity to it.
@@ -95,7 +106,10 @@ public class Enemy : MonoBehaviour
 
         totalClashValue = 0;
 
-        totalCoins[2].SetActive(true);
+        if (totalCoins[2].activeSelf == false)
+        {
+            totalCoins[2].SetActive(true);
+        }
 
         for (int i = 1; i <= coinCount; i++)
         {
@@ -218,9 +232,18 @@ public class Enemy : MonoBehaviour
 
         totalClashValue = 0;
 
-        totalCoins[1].SetActive(true);
-        totalCoins[2].SetActive(true);
-        totalCoins[3].SetActive(true);
+        if (totalCoins[1].activeSelf == false)
+        {
+            totalCoins[1].SetActive(true);
+        }
+        if (totalCoins[2].activeSelf == false)
+        {
+            totalCoins[2].SetActive(true);
+        }
+        if (totalCoins[3].activeSelf == false)
+        {
+            totalCoins[3].SetActive(true);
+        }
 
         for (int i = 1; i <= coinCount; i++)
         {
@@ -341,9 +364,12 @@ public class Enemy : MonoBehaviour
 
         totalClashValue = 0;
 
-        for (int i = 0; i < totalCoins.Length; i++)
+        for (int i = 0; i <= totalCoins.Length; i++)
         {
-            totalCoins[i].SetActive(true);
+            if (totalCoins[i].activeSelf == false)
+            {
+                totalCoins[i].SetActive(true);
+            }
         }
 
         for (int i = 1; i <= coinCount; i++)
