@@ -1,13 +1,38 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     private int sanity = 0;
     private int speed;
+    public int health = 200;
     int headsThreshold;
 
+    [SerializeField] GameObject gameManager;
+    GameManager gameScript;
+
     [SerializeField] GameObject[] totalCoins;
+
+    [SerializeField] GameObject Enemy;
+
+    [SerializeField] Text healthText;
+    [SerializeField] Text sanityText;
+
+    [SerializeField] Text coinOneText;
+    [SerializeField] Text coinTwoText;
+    [SerializeField] Text coinThreeText;
+    [SerializeField] Text coinFourText;
+    [SerializeField] Text coinFiveText;
+
+    public bool clashComplete = false;
+
+    public int selectedSkill = 0;
+
+    public int totalClashValue = 0;
+    public int coinCount = 0;
+
+    bool playerWon = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,6 +41,8 @@ public class Player : MonoBehaviour
         {
             totalCoins[i].SetActive(false);
         }
+
+        gameScript = gameManager.GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -32,10 +59,21 @@ public class Player : MonoBehaviour
         {
             sanity = -45;
         }
+
+        // UI
+
+        healthText.text = health.ToString();
+        sanityText.text = sanity.ToString();
     }
 
-    void newTurn()
+    public void NewTurn()
     {
+        if(playerWon == true)
+        {
+            Enemy.GetComponent<Enemy>().NewTurn();
+            playerWon = false;
+        }
+
         speed = UnityEngine.Random.Range(2, 7);
 
         headsThreshold = 50 + sanity;
@@ -49,59 +87,285 @@ public class Player : MonoBehaviour
          */
     }
 
-    void SkillOne()
+    public void SkillOne()
     {
-        int coinCount = 1;
+        if(turnStarted == true)
+        {
+            gameScript.startOfTurn = true;
+            turnStarted = false;
+        }
+
+        selectedSkill = 1;
+        coinCount = 1;
         int coinValue = 15;
 
         // Minimum: 0
         // Maximum: 15
 
-        int clashValue = 0;
+        totalClashValue = 0;
 
-        for (int i = 0; i <= coinCount; i++)
+        totalCoins[2].SetActive(true);
+
+        for (int i = 1; i <= coinCount; i++)
         {
             int headsOrTails = UnityEngine.Random.Range(0, 100);
 
             if (headsOrTails <= headsThreshold) // heads
             {
-                clashValue += coinValue;
+                totalClashValue += coinValue;
+
+                switch(i)
+                {
+                    case 1:
+                        coinOneText.text = "H";
+                        break;
+                    case 2:
+                        coinTwoText.text = "H";
+                        break;
+                    case 3:
+                        coinThreeText.text = "H";
+                        break;
+                    case 4:
+                        coinFourText.text = "H";
+                        break;
+                    case 5:
+                        coinFiveText.text = "H";
+                        break;
+                }
+            }
+            else // Tails
+            {
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "T";
+                        break;
+                    case 2:
+                        coinTwoText.text = "T";
+                        break;
+                    case 3:
+                        coinThreeText.text = "T";
+                        break;
+                    case 4:
+                        coinFourText.text = "T";
+                        break;
+                    case 5:
+                        coinFiveText.text = "T";
+                        break;
+                }
             }
         }
+
+        gameScript.TurnStart();
     }
 
-    void SkillTwo()
+    public void SkillOneDamage()
+    {
+        coinCount = 1;
+        playerWon = true;
+
+        for (int i = 1; i <= coinCount; i++)
+        {
+            int headsOrTails = UnityEngine.Random.Range(0, 100);
+
+            if (headsOrTails <= headsThreshold) // heads
+            {
+                Enemy.GetComponent<Enemy>().health -= 10;
+
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "H";
+                        break;
+                    case 2:
+                        coinTwoText.text = "H";
+                        break;
+                    case 3:
+                        coinThreeText.text = "H";
+                        break;
+                    case 4:
+                        coinFourText.text = "H";
+                        break;
+                    case 5:
+                        coinFiveText.text = "H";
+                        break;
+                }
+            }
+            else // tails
+            {
+                Enemy.GetComponent<Enemy>().health -= 5;
+
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "T";
+                        break;
+                    case 2:
+                        coinTwoText.text = "T";
+                        break;
+                    case 3:
+                        coinThreeText.text = "T";
+                        break;
+                    case 4:
+                        coinFourText.text = "T";
+                        break;
+                    case 5:
+                        coinFiveText.text = "T";
+                        break;
+                }
+            }
+        }
+
+        NewTurn();
+    }
+
+    public void SkillTwo()
     {
         // this skill I'm using to simulate a negative coin ID, meaning tails increases clash power
 
-        int coinCount = 3;
+        selectedSkill = 2;
+
+        coinCount = 3;
         int coinValue = 7;
 
         // Minimum: 0
         // Maximum: 21
 
-        int clashValue = 0;
+        totalClashValue = 0;
 
-        for (int i = 0; i <= coinCount; i++)
+        totalCoins[1].SetActive(true);
+        totalCoins[2].SetActive(true);
+        totalCoins[3].SetActive(true);
+
+        for (int i = 1; i <= coinCount; i++)
         {
             int headsOrTails = UnityEngine.Random.Range(0, 100);
 
             if (headsOrTails >= headsThreshold) // tails
             {
-                clashValue += coinValue;
+                totalClashValue += coinValue;
+
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "H";
+                        break;
+                    case 2:
+                        coinTwoText.text = "H";
+                        break;
+                    case 3:
+                        coinThreeText.text = "H";
+                        break;
+                    case 4:
+                        coinFourText.text = "H";
+                        break;
+                    case 5:
+                        coinFiveText.text = "H";
+                        break;
+                }
+            }
+            else // Tails
+            {
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "T";
+                        break;
+                    case 2:
+                        coinTwoText.text = "T";
+                        break;
+                    case 3:
+                        coinThreeText.text = "T";
+                        break;
+                    case 4:
+                        coinFourText.text = "T";
+                        break;
+                    case 5:
+                        coinFiveText.text = "T";
+                        break;
+                }
             }
         }
+
+        gameScript.TurnStart();
     }
 
-    void SkillThree()
+    public void SkillTwoDamage()
     {
-        int coinCount = 5;
+        coinCount = 3;
+        playerWon = true;
+
+        for (int i = 1; i <= coinCount; i++)
+        {
+            int headsOrTails = UnityEngine.Random.Range(0, 100);
+
+            if (headsOrTails <= headsThreshold) // heads
+            {
+                Enemy.GetComponent<Enemy>().health -= 14;
+
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "H";
+                        break;
+                    case 2:
+                        coinTwoText.text = "H";
+                        break;
+                    case 3:
+                        coinThreeText.text = "H";
+                        break;
+                    case 4:
+                        coinFourText.text = "H";
+                        break;
+                    case 5:
+                        coinFiveText.text = "H";
+                        break;
+                }
+            }
+            else // tails
+            {
+                Enemy.GetComponent<Enemy>().health -= 7;
+
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "T";
+                        break;
+                    case 2:
+                        coinTwoText.text = "T";
+                        break;
+                    case 3:
+                        coinThreeText.text = "T";
+                        break;
+                    case 4:
+                        coinFourText.text = "T";
+                        break;
+                    case 5:
+                        coinFiveText.text = "T";
+                        break;
+                }
+            }
+        }
+
+        NewTurn();
+    }
+
+    public void SkillThree()
+    {
+        selectedSkill = 3;
+
+        coinCount = 5;
         int coinValue = 6;
 
         // Minimum: 0
         // Maximum: 30
 
-        int clashValue = 0;
+        totalClashValue = 0;
+
+        for (int i = 1; i < totalCoins.Length; i++)
+        {
+            totalCoins[i].SetActive(true);
+        }
 
         for (int i = 0; i <= coinCount; i++)
         {
@@ -109,8 +373,110 @@ public class Player : MonoBehaviour
 
             if (headsOrTails <= headsThreshold) // heads
             {
-                clashValue += coinValue;
+                totalClashValue += coinValue;
+
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "H";
+                        break;
+                    case 2:
+                        coinTwoText.text = "H";
+                        break;
+                    case 3:
+                        coinThreeText.text = "H";
+                        break;
+                    case 4:
+                        coinFourText.text = "H";
+                        break;
+                    case 5:
+                        coinFiveText.text = "H";
+                        break;
+                }
+            }
+            else // Tails
+            {
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "T";
+                        break;
+                    case 2:
+                        coinTwoText.text = "T";
+                        break;
+                    case 3:
+                        coinThreeText.text = "T";
+                        break;
+                    case 4:
+                        coinFourText.text = "T";
+                        break;
+                    case 5:
+                        coinFiveText.text = "T";
+                        break;
+                }
             }
         }
+
+        gameScript.TurnStart();
+    }
+
+    public void SkillThreeDamage()
+    {
+        coinCount = 5;
+        playerWon = true;
+
+        for (int i = 1; i <= coinCount; i++)
+        {
+            int headsOrTails = UnityEngine.Random.Range(0, 100);
+
+            if (headsOrTails <= headsThreshold) // heads
+            {
+                Enemy.GetComponent<Enemy>().health -= 20;
+
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "H";
+                        break;
+                    case 2:
+                        coinTwoText.text = "H";
+                        break;
+                    case 3:
+                        coinThreeText.text = "H";
+                        break;
+                    case 4:
+                        coinFourText.text = "H";
+                        break;
+                    case 5:
+                        coinFiveText.text = "H";
+                        break;
+                }
+            }
+            else // tails
+            {
+                Enemy.GetComponent<Enemy>().health -= 10;
+
+                switch (i)
+                {
+                    case 1:
+                        coinOneText.text = "T";
+                        break;
+                    case 2:
+                        coinTwoText.text = "T";
+                        break;
+                    case 3:
+                        coinThreeText.text = "T";
+                        break;
+                    case 4:
+                        coinFourText.text = "T";
+                        break;
+                    case 5:
+                        coinFiveText.text = "T";
+                        break;
+                }
+            }
+        }
+
+        NewTurn();
     }
 }
